@@ -4,4 +4,6 @@
     <string name="defTitle">Task Title</string>
     <string name="defDesc">Task description</string>
     <string name="misDesc">No desc</string>
+    <string name="titleText">Title</string>
+    <string name="descText">Desc</string>
 </resources>
