@@ -3,9 +3,12 @@ package com.nvwa.lab4;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.support.v4.app.Fragment;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private int listItemPosition = -1;
     public static final String taskExtra = "Task";
     static public ArrayList<Task> myTasks;
     static {
@@ -42,6 +46,17 @@ public class MainActivity extends AppCompatActivity {
                     frag.displayTask((Task)parent.getItemAtPosition(position));
                 } else
                     startSecondActivity(parent, position);
+            }
+        });
+
+        taskFr.getListView().setOnItemLongClickListener( new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(),"Item long clicked.", Toast.LENGTH_LONG).show();
+                DialogFragment newFragment = DeleteDialog.newInstance();
+                newFragment.show( getSupportFragmentManager(), "DeleteDialogTag");
+                listItemPosition = position;
+                return true;
             }
         });
     }

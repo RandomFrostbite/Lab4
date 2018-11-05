@@ -4,6 +4,10 @@
     <string name="defTitle">Task Title</string>
     <string name="defDesc">Task description</string>
     <string name="misDesc">No desc</string>
-    <string name="titleText">Title</string>
-    <string name="descText">Desc</string>
+    <string name="titleText"></string>
+    <string name="descText"></string>
+
+    <string name="dialog_title">Delete action</string>
+    <string name="dialog_OK">OK</string>
+    <string name="dialog_Cancel">Cancel</string>
 </resources>
