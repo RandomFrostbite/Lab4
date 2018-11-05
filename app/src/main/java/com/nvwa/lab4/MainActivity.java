@@ -2,6 +2,7 @@ package com.nvwa.lab4;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,7 +37,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText( getApplicationContext(), "Item selected", Toast.LENGTH_LONG).show();
-                startSecondActivity(parent, position);
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ) {
+                    TaskInfoFragment frag = (TaskInfoFragment)getSupportFragmentManager().findFragmentById(R.id.displayFragment);
+                    frag.displayTask((Task)parent.getItemAtPosition(position));
+                } else
+                    startSecondActivity(parent, position);
             }
         });
     }
