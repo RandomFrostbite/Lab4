@@ -3,6 +3,7 @@ package com.nvwa.lab4;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +18,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DeleteDialog.NoticeDialogListener {
 
     private int listItemPosition = -1;
     public static final String taskExtra = "Task";
@@ -94,5 +95,27 @@ public class MainActivity extends AppCompatActivity {
             InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             im.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        if (listItemPosition != -1) {
+            myTasks.remove(listItemPosition);
+            TaskListFragment taskFr = (TaskListFragment)getSupportFragmentManager().findFragmentById(R.id.taskFragment);
+            ArrayAdapter<Task> taskAdapter = (ArrayAdapter<Task>) taskFr.getListAdapter();
+            taskAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        View v = findViewById(R.id.addBtn);
+        Snackbar.make(v,"Delete canceled", Snackbar.LENGTH_LONG).setAction("Retry?", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment newFragment = DeleteDialog.newInstance();
+                newFragment.show( getSupportFragmentManager(), "DeleteDialogTag");
+            }
+        }).show();
     }
 }
