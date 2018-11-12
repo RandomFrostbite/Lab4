@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nvwa.lab4.TaskInfoFragment">
+    tools:context="com.nvwa.lab4.TaskInfoFragment"
+    android:visibility="invisible">
 
     <TextView
         android:id="@+id/titleTextView"
@@ -26,4 +27,19 @@
         android:layout_alignStart="@+id/titleTextView"
         android:layout_alignEnd="@id/titleTextView"
         android:layout_marginTop="32dp"/>
+    <ImageView
+        android:id="@+id/taskPhoto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_above="@+id/titleTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
+    <Button
+        android:id="@+id/takePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="@string/takePhoto"/>
 </RelativeLayout>

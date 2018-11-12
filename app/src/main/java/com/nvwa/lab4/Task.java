@@ -16,26 +16,30 @@ public class Task implements Parcelable {
         picPath = null;
     }
 
-    Task(String t, String d, String pic) {
+    Task( String t, String d, String pic ) {
         title = t;
         desc = d;
         picPath = pic;
     }
 
-    protected Task(Parcel in) {
+    protected Task( Parcel in ) {
         title = in.readString();
         desc = in.readString();
         picPath = in.readString();
     }
 
+    void addPicPath( String pPath ) {
+        picPath = pPath;
+    }
+
     public static final Creator<Task> CREATOR = new Creator<Task>() {
         @Override
-        public Task createFromParcel(Parcel in) {
+        public Task createFromParcel( Parcel in ) {
             return new Task(in);
         }
 
         @Override
-        public Task[] newArray(int size) {
+        public Task[] newArray( int size ) {
             return new Task[size];
         }
     };
@@ -51,7 +55,7 @@ public class Task implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel( Parcel dest, int flags ) {
         dest.writeString(title);
         dest.writeString(desc);
         dest.writeString(picPath);

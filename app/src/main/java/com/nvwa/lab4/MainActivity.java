@@ -25,44 +25,44 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Noti
     static public ArrayList<Task> myTasks;
     static {
         myTasks = new ArrayList<Task>();
-        myTasks.add( new Task("Task1", "Create a todo list") );
-        myTasks.add( new Task("Task2", "Write two tasks") );
-        myTasks.add( new Task("Task3", "Realize that you have completed 3 tasks") );
-        myTasks.add( new Task("Task4", "Have some rest") );
+        myTasks.add( new Task("Task1", "Create a todo list" ) );
+        myTasks.add( new Task("Task2", "Write two tasks" ) );
+        myTasks.add( new Task("Task3", "Realize that you have completed 3 tasks" ) );
+        myTasks.add( new Task("Task4", "Have some rest" ) );
     }
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected void onCreate( Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_main );
 
-        final TaskListFragment taskFr = (TaskListFragment) getSupportFragmentManager().findFragmentById(R.id.taskFragment);
+        final TaskListFragment taskFr = (TaskListFragment) getSupportFragmentManager().findFragmentById( R.id.taskFragment );
         final ArrayAdapter<Task> taskAdapter = (ArrayAdapter<Task>) taskFr.getListAdapter();
 
-        taskFr.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        taskFr.getListView().setOnItemClickListener( new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText( getApplicationContext(), "Item selected", Toast.LENGTH_LONG).show();
-                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ) {
+            public void onItemClick( AdapterView<?> parent, View view, int position, long id ) {
+                Toast.makeText( getApplicationContext(), "Item selected", Toast.LENGTH_LONG ).show();
+                if ( getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE ) {
                     TaskInfoFragment frag = (TaskInfoFragment)getSupportFragmentManager().findFragmentById(R.id.displayFragment);
-                    frag.displayTask((Task)parent.getItemAtPosition(position));
+                    frag.displayTask( (Task)parent.getItemAtPosition(position) );
                 } else
-                    startSecondActivity(parent, position);
+                    startSecondActivity( parent, position );
             }
         });
 
         taskFr.getListView().setOnItemLongClickListener( new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(),"Item long clicked.", Toast.LENGTH_LONG).show();
+            public boolean onItemLongClick( AdapterView<?> parent, View view, int position, long id ) {
+                Toast.makeText( getApplicationContext(),"Item long clicked.", Toast.LENGTH_LONG ).show();
                 DialogFragment newFragment = DeleteDialog.newInstance();
-                newFragment.show( getSupportFragmentManager(), "DeleteDialogTag");
+                newFragment.show( getSupportFragmentManager(), "DeleteDialogTag" );
                 listItemPosition = position;
                 return true;
             }
         });
     }
 
-    private void startSecondActivity(AdapterView<?> parent, int position) {
+    private void startSecondActivity( AdapterView<?> parent, int position ) {
         Intent intent = new Intent(this, TaskInfoActivity.class );
         Task tmp = (Task)parent.getItemAtPosition(position);
         intent.putExtra( taskExtra, tmp );
@@ -87,18 +87,18 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Noti
         ArrayAdapter<Task> taskAdapter = (ArrayAdapter<Task>) taskFr.getListAdapter();
         taskAdapter.notifyDataSetChanged();
 
-        ((EditText) findViewById(R.id.taskTitle)).setText(null);
-        ((EditText) findViewById(R.id.taskDesc)).setText(null);
+        ((EditText) findViewById( R.id.taskTitle ) ).setText(null);
+        ((EditText) findViewById( R.id.taskDesc  ) ).setText(null);
 
         View focusedView = getCurrentFocus();
         if ( focusedView != null ) {
-            InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            im.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            InputMethodManager im = (InputMethodManager)getSystemService( Context.INPUT_METHOD_SERVICE );
+            im.hideSoftInputFromWindow( view.getWindowToken(), 0 );
         }
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
+    public void onDialogPositiveClick( DialogFragment dialog ) {
         if (listItemPosition != -1) {
             myTasks.remove(listItemPosition);
             TaskListFragment taskFr = (TaskListFragment)getSupportFragmentManager().findFragmentById(R.id.taskFragment);
@@ -108,13 +108,13 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Noti
     }
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        View v = findViewById(R.id.addBtn);
-        Snackbar.make(v,"Delete canceled", Snackbar.LENGTH_LONG).setAction("Retry?", new View.OnClickListener() {
+    public void onDialogNegativeClick( DialogFragment dialog ) {
+        View v = findViewById( R.id.addBtn );
+        Snackbar.make( v,"Delete canceled", Snackbar.LENGTH_LONG).setAction("Retry?", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment newFragment = DeleteDialog.newInstance();
-                newFragment.show( getSupportFragmentManager(), "DeleteDialogTag");
+                newFragment.show( getSupportFragmentManager(), "DeleteDialogTag" );
             }
         }).show();
     }

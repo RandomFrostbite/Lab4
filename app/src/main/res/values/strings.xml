@@ -6,6 +6,7 @@
     <string name="misDesc">No desc</string>
     <string name="titleText"></string>
     <string name="descText"></string>
+    <string name="takePhoto">Take photo</string>
 
     <string name="dialog_title">Delete action</string>
     <string name="dialog_OK">OK</string>
