@@ -2,6 +2,7 @@ package com.nvwa.lab4;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
@@ -30,10 +31,17 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Noti
         myTasks.add( new Task("Task3", "Realize that you have completed 3 tasks" ) );
         myTasks.add( new Task("Task4", "Have some rest" ) );
     }
+    public static final String TASKS_FILE = "com.nvwa.lab4.TasksFile";
+    public static final String NUM_TASKS = "NumOfTasks";
+    public static final String TASK = "task_";
+    public static final String DESC = "desc_";
+    public static final String PIC = "pic_";
+
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
+        restoreTasks();
 
         final TaskListFragment taskFr = (TaskListFragment) getSupportFragmentManager().findFragmentById( R.id.taskFragment );
         final ArrayAdapter<Task> taskAdapter = (ArrayAdapter<Task>) taskFr.getListAdapter();
@@ -60,6 +68,30 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Noti
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void  onDestroy() {
+        super.onDestroy();
+        if ( !saveTasks() ) {
+            Toast.makeText(getApplicationContext(), "Save failed!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void restoreTasks() {
+        SharedPreferences tasks = getSharedPreferences( TASKS_FILE, MODE_PRIVATE );
+        int numOfTasks = tasks.getInt( "NumOfTasks", 0 );
+        if ( numOfTasks != 0 ) {
+            myTasks.clear();
+            for ( Integer i = 0; i < numOfTasks; i++ ) {
+                String title = tasks.getString( TASK + i.toString(), "0" );
+                String desc  = tasks.getString( DESC + i.toString(), "0" );
+                String picPath = tasks.getString( PIC + i.toString(), "" );
+                Task tmp = new Task( title, desc, picPath );
+                myTasks.add(tmp);
+            }
+        }
+        //restoreTasksFromFile();
     }
 
     private void startSecondActivity( AdapterView<?> parent, int position ) {
@@ -117,5 +149,19 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Noti
                 newFragment.show( getSupportFragmentManager(), "DeleteDialogTag" );
             }
         }).show();
+    }
+
+    private boolean saveTasks() {
+        SharedPreferences tasks = getSharedPreferences( TASKS_FILE, MODE_PRIVATE );
+        SharedPreferences.Editor editor = tasks.edit();
+        editor.clear();
+        editor.putInt( NUM_TASKS, myTasks.size() );
+        for ( Integer i = 0; i < myTasks.size(); i++ ) {
+            editor.putString( TASK + i.toString(), myTasks.get(i).title );
+            editor.putString( DESC + i.toString(), myTasks.get(i).desc );
+            editor.putString( PIC  + i.toString(), myTasks.get(i).picPath );
+        }
+
+        return editor.commit();
     }
 }

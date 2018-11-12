@@ -75,7 +75,7 @@ public class TaskInfoFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick( View v ) {
         Intent takePictureIntent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE );
-        if (takePictureIntent.resolveActivity( getActivity().getPackageManager() ) != null ) {
+        if ( takePictureIntent.resolveActivity( getActivity().getPackageManager() ) != null ) {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
