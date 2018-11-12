@@ -17,6 +17,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements DeleteDialog.NoticeDialogListener {
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Noti
         if ( !saveTasks() ) {
             Toast.makeText(getApplicationContext(), "Save failed!", Toast.LENGTH_LONG).show();
         }
+        saveTasksToFile();
     }
 
     private void restoreTasks() {
@@ -92,6 +97,28 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Noti
             }
         }
         //restoreTasksFromFile();
+    }
+
+
+    private void saveTasksToFile() {
+        String filename = "myTasks.txt";
+        FileOutputStream outputStream;
+
+        try {
+           outputStream = openFileOutput( filename, Context.MODE_PRIVATE );
+           BufferedWriter writer = new BufferedWriter( new FileWriter( outputStream.getFD() ) );
+            String delim = ":";
+
+           for ( Integer i = 0; i < myTasks.size(); i++ ) {
+               Task tmp = myTasks.get(i);
+               String line = tmp.title + delim + tmp.desc + delim + tmp.picPath;
+               writer.write( line );
+               writer.newLine();
+           }
+           writer.close();
+        } catch ( IOException ex ) {
+            ex.printStackTrace();
+        }
     }
 
     private void startSecondActivity( AdapterView<?> parent, int position ) {
