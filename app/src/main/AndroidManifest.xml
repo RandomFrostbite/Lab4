@@ -30,6 +30,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".TaskInfoActivity"></activity>
+        <activity android:name=".show_saved" />
     </application>
 
 </manifest>

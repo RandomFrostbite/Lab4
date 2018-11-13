@@ -8,6 +8,9 @@
     <string name="descText"></string>
     <string name="takePhoto">Take photo</string>
 
+    <string name="titleData">Saved data</string>
+    <string name="data">Empty</string>
+
     <string name="dialog_title">Delete action</string>
     <string name="dialog_OK">OK</string>
     <string name="dialog_Cancel">Cancel</string>

@@ -3,6 +3,7 @@ package com.nvwa.lab4;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,7 +31,7 @@ public class TaskInfoFragment extends Fragment implements View.OnClickListener {
 
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     private String mCurrentPhotoPath;
-    private Task mDisplayTask;
+    public Task mDisplayTask;
 
     public TaskInfoFragment() {
         // Required empty public constructor
@@ -80,7 +81,7 @@ public class TaskInfoFragment extends Fragment implements View.OnClickListener {
             try {
                 photoFile = createImageFile();
             } catch(IOException ex) {
-
+                ex.printStackTrace();
             }
 
             if ( photoFile != null ) {

@@ -14,11 +14,16 @@ import android.support.v4.app.Fragment;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -72,6 +77,16 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Noti
                 return true;
             }
         });
+
+        Button addTask = (Button)( findViewById(R.id.addBtn) );
+        addTask.setOnLongClickListener( new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent in = new Intent( getApplicationContext(), show_saved.class );
+                startActivity(in);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -80,6 +95,13 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Noti
         if ( !saveTasks() ) {
             Toast.makeText(getApplicationContext(), "Save failed!", Toast.LENGTH_LONG).show();
         }
+        saveTasksToFile();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        restoreTasks();
         saveTasksToFile();
     }
 
@@ -99,6 +121,26 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Noti
         //restoreTasksFromFile();
     }
 
+    private void restoreTasksFromFile() {
+        String filename = "myTasks.txt";
+        FileInputStream inputStream;
+        StringBuilder contents = new StringBuilder();
+        try {
+            inputStream = openFileInput(filename);
+            BufferedReader reader = new BufferedReader( new FileReader( inputStream.getFD() ) );
+            String line;
+            String info[];
+            while ( (line = reader.readLine() ) != null ) {
+                contents.append(line);
+                contents.append("\n");
+            }
+        } catch(FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void saveTasksToFile() {
         String filename = "myTasks.txt";
@@ -107,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements DeleteDialog.Noti
         try {
            outputStream = openFileOutput( filename, Context.MODE_PRIVATE );
            BufferedWriter writer = new BufferedWriter( new FileWriter( outputStream.getFD() ) );
-            String delim = ":";
+           String delim = ":";
 
            for ( Integer i = 0; i < myTasks.size(); i++ ) {
                Task tmp = myTasks.get(i);
